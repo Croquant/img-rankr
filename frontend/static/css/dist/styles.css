@@ -836,6 +836,18 @@ select {
   height: 16rem;
 }
 
+.h-1\/2 {
+  height: 50%;
+}
+
+.h-1\/4 {
+  height: 25%;
+}
+
+.h-\[50vh\] {
+  height: 50vh;
+}
+
 .max-h-full {
   max-height: 100%;
 }
@@ -854,6 +866,10 @@ select {
 
 .max-w-4xl {
   max-width: 56rem;
+}
+
+.max-w-xl {
+  max-width: 36rem;
 }
 
 .items-center {
@@ -1046,6 +1062,10 @@ select {
 
   .md\:max-w-6xl {
     max-width: 72rem;
+  }
+
+  .md\:max-w-4xl {
+    max-width: 56rem;
   }
 
   .md\:shrink-0 {
