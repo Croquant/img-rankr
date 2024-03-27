@@ -9,6 +9,10 @@
   <div class="md:flex">
     <div class="md:w-1/2">
       <img
+        hx-get="/api/elo/match?winner={{img1.id}}&loser={{img2.id}}"
+        hx-trigger="click"
+        hx-target="body"
+        placeholder="Loading..."
         class="h-[45vh] w-full object-contain md:h-full md:w-full"
         src="{{ img1.file_url }}"
         alt="{{ img1.id }}"
@@ -17,6 +21,10 @@
 
     <div class="md:w-1/2">
       <img
+        hx-get="/api/elo/match?winner={{img2.id}}&loser={{img1.id}}"
+        hx-trigger="click"
+        hx-target="body"
+        placeholder="Loading..."
         class="h-[45vh] w-full object-contain md:h-full md:w-full"
         src="{{ img2.file_url }}"
         alt="{{ img2.id }}"

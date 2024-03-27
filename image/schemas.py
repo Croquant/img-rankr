@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from ninja import Schema
+from ninja import Field, Schema
 
 
 class ImageSchema(Schema):
@@ -8,6 +8,7 @@ class ImageSchema(Schema):
     file_hash: str
     created_at: datetime
     modified_at: datetime
+    score: float = Field(None, alias="elo.score")
 
 
 class AddImageInputSchema(Schema):

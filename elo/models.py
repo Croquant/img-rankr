@@ -58,3 +58,65 @@ class EloHistory(models.Model):
 
     def __str__(self):
         return f"elo_history({self.elo.image.id}-{self.id})"
+
+
+class Match(models.Model):
+    id = models.CharField(
+        primary_key=True, max_length=26, default=ULID, editable=False
+    )
+
+    def __str__(self):
+        return f"match({self.id})"
+
+    # -- fields ----------
+    k = models.FloatField(blank=True, null=True, editable=False)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    # -- winner ----------
+    winner = models.ForeignKey(
+        Elo, on_delete=models.CASCADE, related_name="wins"
+    )
+    winner_score_old = models.FloatField(blank=True, null=True, editable=False)
+    winner_score_new = models.FloatField(blank=True, null=True, editable=False)
+    winner_diff = models.FloatField(blank=True, null=True, editable=False)
+
+    # -- loser ----------
+    loser = models.ForeignKey(
+        Elo, on_delete=models.CASCADE, related_name="losses"
+    )
+    loser_score_old = models.FloatField(blank=True, null=True, editable=False)
+    loser_score_new = models.FloatField(blank=True, null=True, editable=False)
+    loser_diff = models.FloatField(blank=True, null=True, editable=False)
+
+    def get_k(self):
+        total_matches = self.winner.n_games + self.loser.n_games
+        return max((800 / (total_matches + 3)), 10)
+
+    def get_diff(self, k: float, w_score: float, l_score: float):
+        w_ex = 1 / (10 ** (-(w_score - l_score) / 400) + 1)
+        return k * (1 - w_ex)
+
+    def save(self, *args, **kwargs):
+        self.k = self.get_k()
+
+        self.winner_score_old = self.winner.score
+        self.loser_score_old = self.loser.score
+
+        diff = self.get_diff(self.k, self.winner.score, self.loser.score)
+        self.winner_diff = diff
+        self.loser_diff = -diff
+
+        self.winner_score_new = self.winner.score + diff
+        self.loser_score_new = self.loser.score - diff
+
+        self.winner.score = self.winner_score_new
+        self.winner.n_games += 1
+        self.winner.n_wins += 1
+        self.winner.save()
+
+        self.loser.score = self.loser_score_new
+        self.loser.n_games += 1
+        self.loser.n_losses += 1
+        self.loser.save()
+
+        super().save(*args, **kwargs)

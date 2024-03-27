@@ -26,4 +26,4 @@ def add_image(request, data: AddImageInputSchema):
 
 @router.get("/all", response=List[ImageSchema])
 def get_all_images(request):
-    return Image.objects.all()
+    return Image.objects.all().order_by("-elo__score")
