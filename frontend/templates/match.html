@@ -1,21 +1,19 @@
 {% extends "base.html" %} {% block content %}
-<div
-  class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-4xl"
->
+<div class="max-w-md mx-auto overflow-hidden md:max-w-4xl">
   <div class="md:flex">
-    <div class="md:w-1/2">
+    <div class="md:w-1/2 hover:scale-110">
       <img
-        class="h-[50vh] w-full object-cover md:h-full md:w-full"
+        class="h-[45vh] w-full object-contain md:h-full md:w-full"
         src="{{ img1.file_url }}"
-        alt="Image 1"
+        alt="{{ img1.file_hash }}"
       />
     </div>
 
-    <div class="md:w-1/2">
+    <div class="md:w-1/2 hover:scale-110">
       <img
-        class="h-[50vh] w-full object-cover md:h-full md:w-full"
+        class="h-[45vh] w-full object-contain md:h-full md:w-full"
         src="{{ img2.file_url }}"
-        alt="Image 2"
+        alt="{{ img2.file_hash }}"
       />
     </div>
   </div>
