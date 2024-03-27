@@ -13,14 +13,13 @@ SECRET_KEY = os.environ.get(
 
 IS_HEROKU_APP = "DYNO" in os.environ and "CI" not in os.environ
 
-# if not IS_HEROKU_APP:
-DEBUG = True
+if not IS_HEROKU_APP:
+    DEBUG = True
 
 if IS_HEROKU_APP:
     ALLOWED_HOSTS = ["*"]
 else:
     ALLOWED_HOSTS = []
-
 
 # Application definition
 INSTALLED_APPS = [
@@ -31,8 +30,10 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "tailwind",
     "image.apps.ImageConfig",
     "elo.apps.EloConfig",
+    "frontend",
 ]
 
 MIDDLEWARE = [
@@ -82,10 +83,6 @@ else:
         }
     }
 
-
-# Password validation
-# https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",  # noqa: E501
@@ -101,10 +98,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
-# Internationalization
-# https://docs.djangoproject.com/en/5.0/topics/i18n/
-
 LANGUAGE_CODE = "en-us"
 
 TIME_ZONE = "UTC"
@@ -112,10 +105,6 @@ TIME_ZONE = "UTC"
 USE_I18N = True
 
 USE_TZ = True
-
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATIC_URL = "static/"
@@ -128,7 +117,10 @@ STORAGES = {
 
 WHITENOISE_KEEP_ONLY_HASHED_FILES = True
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+TAILWIND_APP_NAME = "frontend"
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
