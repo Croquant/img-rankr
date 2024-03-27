@@ -6,7 +6,10 @@ from image.models import Image
 
 
 def test(request):
-    images = Image.objects.all().order_by("?")
+    ids = Image.objects.values_list("id", flat=True)
+    ids = list(ids)
+    rand_ids = random.sample(ids, 2)
+    images = Image.objects.filter(id__in=rand_ids)
     img1 = images[0]
     img2 = images[1]
     context = {"title": "test", "img1": img1, "img2": img2}
