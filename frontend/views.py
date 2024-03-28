@@ -1,6 +1,6 @@
 import random
 
-from django.db.models import F, Sum
+from django.db.models import Case, F, FloatField, Sum, When
 from django.shortcuts import render
 
 from elo.models import Elo
@@ -11,7 +11,11 @@ def match_view(request):
         "total_games"
     ]
     elo_with_weights = Elo.objects.annotate(
-        weight=float(total_games) / max(F("n_games"), 1)
+        weight=Case(
+            When(n_games__gt=0, then=float(total_games) / F("n_games")),
+            default=total_games,
+            output_field=FloatField(),
+        )
     )
     selected_images = random.choices(
         elo_with_weights, weights=[elo.weight for elo in elo_with_weights], k=2
