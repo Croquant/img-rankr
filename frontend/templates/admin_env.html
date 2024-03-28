@@ -1,0 +1,18 @@
+{% extends "admin/base_site.html" %} {% block content %}
+<table>
+  <thead>
+    <tr>
+      <th>Variable</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for var in env_vars %}
+    <tr>
+      <td>{{ var.0 }}</td>
+      <td>{{ var.1 }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock content %}

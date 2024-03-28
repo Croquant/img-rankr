@@ -1,5 +1,7 @@
 from django.contrib import admin
 
+from config.admin import admin_site
+
 from .models import Elo, EloHistory, Match
 
 
@@ -27,6 +29,6 @@ class MatchAdmin(admin.ModelAdmin):
     pass
 
 
-admin.site.register(Elo, EloAdmin)
-admin.site.register(EloHistory, EloHistoryAdmin)
-admin.site.register(Match, MatchAdmin)
+admin_site.register(Elo, EloAdmin)
+admin_site.register(EloHistory, EloHistoryAdmin)
+admin_site.register(Match, MatchAdmin)

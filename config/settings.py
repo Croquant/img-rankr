@@ -65,6 +65,8 @@ TEMPLATES = [
     },
 ]
 
+TEMPLATE_DIRS = (os.path.join(BASE_DIR, "frontend", "templates"),)
+
 WSGI_APPLICATION = "config.wsgi.application"
 
 if "DATABASE_URL" in os.environ:
