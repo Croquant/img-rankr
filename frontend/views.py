@@ -17,10 +17,20 @@ def match_view(request):
             output_field=FloatField(),
         )
     )
-    selected_images = random.choices(
-        elo_with_weights, weights=[elo.weight for elo in elo_with_weights], k=2
-    )
+    weights = [elo.weight for elo in elo_with_weights]
+
+    same = True
+    while same:
+        selected_images = random.choices(
+            elo_with_weights,
+            weights=weights,
+            k=2,
+        )
+        if selected_images[0] != selected_images[1]:
+            same = False
+
     img1 = selected_images[0].image
     img2 = selected_images[1].image
+
     context = {"title": "Match", "img1": img1, "img2": img2}
     return render(request, "match.html", context)
