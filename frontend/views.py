@@ -16,7 +16,6 @@ def match_view(request):
     selected_images = random.choices(
         elo_with_weights, weights=[elo.weight for elo in elo_with_weights], k=2
     )
-    print([(img.n_games, img.weight) for img in selected_images])
     img1 = selected_images[0].image
     img2 = selected_images[1].image
     context = {"title": "Match", "img1": img1, "img2": img2}
