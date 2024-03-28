@@ -1,44 +1,23 @@
 import random
 
+from django.db.models import F, Sum
 from django.shortcuts import render
 
-from image.models import Image
+from elo.models import Elo
 
 
-def test(request):
-    ids = Image.objects.values_list("id", flat=True)
-    ids = list(ids)
-    rand_ids = random.sample(ids, 2)
-    images = Image.objects.filter(id__in=rand_ids)
-    img1 = images[0]
-    img2 = images[1]
-    context = {"title": "test", "img1": img1, "img2": img2}
-    # if request.method == "POST":
-    #     data = request.POST
-    #     winner = Img.objects.get(pk=data.get("winner"))
-    #     loser = Img.objects.get(pk=data.get("loser"))
-    #     Match(winner=winner, loser=loser).save()
+def match_view(request):
+    total_games = Elo.objects.aggregate(total_games=Sum("n_games"))[
+        "total_games"
+    ]
+    elo_with_weights = Elo.objects.annotate(
+        weight=float(total_games) / F("n_games")
+    )
+    selected_images = random.choices(
+        elo_with_weights, weights=[elo.weight for elo in elo_with_weights], k=2
+    )
+    print([(img.n_games, img.weight) for img in selected_images])
+    img1 = selected_images[0].image
+    img2 = selected_images[1].image
+    context = {"title": "Match", "img1": img1, "img2": img2}
     return render(request, "match.html", context)
-
-
-# def test(request):
-#     tag_slug = request.GET.get("tag")
-#     tag = ""
-#     if not tag_slug:
-#         tag = Tag.objects.order_by("?")[0]
-#     else:
-#         tag = Tag.objects.get(slug=tag_slug)
-
-#     query = Img.objects.filter(tags__slug=tag.slug)
-#     images = query.order_by("n_matches", "score")
-#     i1 = random.randint(0, 3)
-#     i2 = random.randint(i1 + 1, i1 + 10)
-#     img1 = images[i1]
-#     img2 = images[i2]
-#     context = {"title": "test", "img1": img1, "img2": img2}
-#     if request.method == "POST":
-#         data = request.POST
-#         winner = Img.objects.get(pk=data.get("winner"))
-#         loser = Img.objects.get(pk=data.get("loser"))
-#         Match(winner=winner, loser=loser).save()
-#     return render(request, "match.html", context)
