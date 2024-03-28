@@ -11,7 +11,7 @@ def match_view(request):
         "total_games"
     ]
     elo_with_weights = Elo.objects.annotate(
-        weight=float(total_games) / F("n_games")
+        weight=float(total_games) / max(F("n_games"), 1)
     )
     selected_images = random.choices(
         elo_with_weights, weights=[elo.weight for elo in elo_with_weights], k=2
