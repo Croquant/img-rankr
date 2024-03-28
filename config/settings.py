@@ -67,7 +67,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "config.wsgi.application"
 
-if IS_HEROKU_APP:
+if "DATABASE_URL" in os.environ:
     DATABASES = {
         "default": dj_database_url.config(
             conn_max_age=600,

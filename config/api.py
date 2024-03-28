@@ -1,3 +1,5 @@
+import os
+
 from ninja import NinjaAPI
 
 from elo.api import router as elo_router
@@ -6,9 +8,9 @@ from image.api import router as image_router
 api = NinjaAPI()
 
 
-@api.get("/ping")
-def hello(request):
-    return "pong"
+@api.get("/environment")
+def environment(request):
+    return {key: value for key, value in os.environ.items()}
 
 
 # ROUTERS
