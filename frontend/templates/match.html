@@ -9,7 +9,7 @@
   <div class="md:flex">
     <div class="md:w-1/2">
       <img
-        hx-get="/api/elo/match?winner={{img1.id}}&loser={{img2.id}}"
+        hx-get="/api/elo/match?w=0&p={{payload}}"
         hx-trigger="click"
         hx-target="body"
         placeholder="Loading..."
@@ -21,7 +21,7 @@
 
     <div class="md:w-1/2">
       <img
-        hx-get="/api/elo/match?winner={{img2.id}}&loser={{img1.id}}"
+        hx-get="/api/elo/match?w=1&p={{payload}}"
         hx-trigger="click"
         hx-target="body"
         placeholder="Loading..."

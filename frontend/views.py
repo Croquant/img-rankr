@@ -4,6 +4,7 @@ import random
 from django.db.models import Case, F, FloatField, Sum, When
 from django.shortcuts import render
 
+from common.utils import encrypt_payload
 from elo.models import Elo
 
 
@@ -50,6 +51,11 @@ def match_view(request):
 
     img1 = selected_images[0].image
     img2 = selected_images[1].image
-
-    context = {"title": "Match", "img1": img1, "img2": img2}
+    payload = encrypt_payload((img1.id, img2.id))
+    context = {
+        "title": "Match",
+        "img1": img1,
+        "img2": img2,
+        "payload": payload,
+    }
     return render(request, "match.html", context)
