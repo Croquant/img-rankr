@@ -1,6 +1,7 @@
 import math
 import random
 
+from django.core.paginator import Paginator
 from django.db.models import Case, F, FloatField, Sum, When
 from django.shortcuts import render
 
@@ -9,21 +10,16 @@ from elo.models import Elo
 
 
 def get_division():
-    ordered_records = Elo.objects.order_by("score")
-    total_records = ordered_records.count()
-    n = math.floor(total_records / 10)
+    ordered_records = Elo.objects.order_by("-score")
 
-    total_records = ordered_records.count()
-    section_size = math.ceil(total_records / n)
+    divisions = Paginator(
+        ordered_records, per_page=10, orphans=3, allow_empty_first_page=False
+    )
 
-    section_indices = [
-        (i * section_size, (i + 1) * section_size) for i in range(n)
-    ]
+    total_divisions = divisions.num_pages
+    chosen_division = random.randint(1, total_divisions)
 
-    selected_section = random.randint(0, n - 1)
-    start, end = section_indices[selected_section]
-
-    return ordered_records[start:end]
+    return divisions.get_page(chosen_division).object_list
 
 
 def match_view(request):
