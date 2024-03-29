@@ -13,6 +13,7 @@ class Elo(models.Model):
         on_delete=models.CASCADE,
         related_name="elo",
         editable=False,
+        db_index=True,
     )
     score = models.FloatField(default=DEFAULT_ELO, editable=False)
     n_games = models.PositiveIntegerField(default=0, editable=False)

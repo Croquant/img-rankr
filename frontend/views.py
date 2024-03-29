@@ -1,4 +1,3 @@
-import math
 import random
 
 from django.core.paginator import Paginator
@@ -35,15 +34,15 @@ def match_view(request):
         )
     )
     weights = [elo.weight for elo in elo_with_weights]
-    same = True
-    while same:
+
+    while True:
         selected_images = random.choices(
             elo_with_weights,
             weights=weights,
             k=2,
         )
         if selected_images[0] != selected_images[1]:
-            same = False
+            break
 
     img1 = selected_images[0].image
     img2 = selected_images[1].image

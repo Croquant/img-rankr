@@ -1,6 +1,7 @@
 from typing import List
 
 from ninja import Router
+from ninja.pagination import PageNumberPagination, paginate
 
 from .models import Image
 from .schemas import (
@@ -25,5 +26,6 @@ def add_image(request, data: AddImageInputSchema):
 
 
 @router.get("/all", response=List[ImageSchema])
+@paginate(PageNumberPagination)
 def get_all_images(request):
-    return Image.objects.all().order_by("-elo__score")
+    return Image.objects.prefetch_related("elo").order_by("-elo__score")
