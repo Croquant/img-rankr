@@ -8,12 +8,16 @@ from .constants import DEFAULT_ELO
 
 class Elo(models.Model):
     image = models.OneToOneField(
-        Image, primary_key=True, on_delete=models.CASCADE, related_name="elo"
+        Image,
+        primary_key=True,
+        on_delete=models.CASCADE,
+        related_name="elo",
+        editable=False,
     )
-    score = models.FloatField(default=DEFAULT_ELO)
-    n_games = models.PositiveIntegerField(default=0)
-    n_wins = models.PositiveIntegerField(default=0)
-    n_losses = models.PositiveIntegerField(default=0)
+    score = models.FloatField(default=DEFAULT_ELO, editable=False)
+    n_games = models.PositiveIntegerField(default=0, editable=False)
+    n_wins = models.PositiveIntegerField(default=0, editable=False)
+    n_losses = models.PositiveIntegerField(default=0, editable=False)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
 
@@ -50,10 +54,10 @@ class EloHistory(models.Model):
         primary_key=True, max_length=26, default=ULID, editable=False
     )
     elo = models.ForeignKey(
-        Elo, on_delete=models.CASCADE, related_name="history"
+        Elo, on_delete=models.CASCADE, related_name="history", editable=False
     )
-    previous_score = models.FloatField()
-    new_score = models.FloatField()
+    previous_score = models.FloatField(editable=False)
+    new_score = models.FloatField(editable=False)
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -74,7 +78,7 @@ class Match(models.Model):
 
     # -- winner ----------
     winner = models.ForeignKey(
-        Elo, on_delete=models.CASCADE, related_name="wins"
+        Elo, on_delete=models.CASCADE, related_name="wins", editable=False
     )
     winner_score_old = models.FloatField(blank=True, null=True, editable=False)
     winner_score_new = models.FloatField(blank=True, null=True, editable=False)
@@ -82,7 +86,7 @@ class Match(models.Model):
 
     # -- loser ----------
     loser = models.ForeignKey(
-        Elo, on_delete=models.CASCADE, related_name="losses"
+        Elo, on_delete=models.CASCADE, related_name="losses", editable=False
     )
     loser_score_old = models.FloatField(blank=True, null=True, editable=False)
     loser_score_new = models.FloatField(blank=True, null=True, editable=False)
