@@ -27,7 +27,9 @@ def get_division():
 
 def match_view(request):
     queryset = get_division()
-    total_games = queryset.aggregate(total_games=Sum("n_games"))["total_games"]
+    total_games = max(
+        queryset.aggregate(total_games=Sum("n_games"))["total_games"], 1
+    )
     elo_with_weights = queryset.annotate(
         weight=Case(
             When(n_games__gt=0, then=float(total_games) / F("n_games")),
@@ -36,7 +38,6 @@ def match_view(request):
         )
     )
     weights = [elo.weight for elo in elo_with_weights]
-
     same = True
     while same:
         selected_images = random.choices(
