@@ -1,7 +1,7 @@
 from django.db import models
 from ulid import ULID
 
-from .utils import calculate_md5_hash
+from .utils import calculate_dhash
 
 
 class Image(models.Model):
@@ -14,7 +14,7 @@ class Image(models.Model):
     modified_at = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
-        self.file_hash = calculate_md5_hash(self.file_url)
+        self.file_hash = calculate_dhash(self.file_url)
         super().save(*args, **kwargs)
 
     def __str__(self):
