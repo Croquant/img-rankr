@@ -11,6 +11,7 @@ colorama==0.4.6
 cookiecutter==2.6.0
 cryptography==42.0.5
 cssbeautifier==1.15.1
+dhash==1.4
 dj-database-url==2.1.0
 Django==5.0.3
 django-ninja==1.1.0
@@ -29,6 +30,7 @@ MarkupSafe==2.1.5
 mdurl==0.1.2
 packaging==24.0
 pathspec==0.12.1
+pillow==10.3.0
 psycopg2-binary==2.9.9
 pycparser==2.21
 pydantic==2.6.4
