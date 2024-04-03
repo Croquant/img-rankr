@@ -5,7 +5,7 @@ from django.db import IntegrityError, transaction
 from django.test import TestCase
 
 from .models import Image
-from .utils import calculate_md5_hash
+from .utils import calculate_dhash, calculate_md5_hash
 
 
 class ImageModelTestCase(TestCase):
@@ -27,7 +27,7 @@ class ImageModelTestCase(TestCase):
         """
         Test if the file hash is correctly calculated.
         """
-        expected_hash = calculate_md5_hash(self.image.file_url)
+        expected_hash = calculate_dhash(self.image.file_url)
         self.assertEqual(self.image.file_hash, expected_hash)
 
     def test_unique_file_url(self):
@@ -46,7 +46,7 @@ class ImageModelTestCase(TestCase):
         self.image.delete()
 
 
-class TestCalculateMD5Hash(unittest.TestCase):
+class TestCalculateDhas(unittest.TestCase):
     def test_valid_file_url(self):
         # Mock the requests.get function to return a sample response
         with patch("requests.get") as mock_get:
